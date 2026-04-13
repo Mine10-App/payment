@@ -316,6 +316,16 @@
         .nav-item.active {
             color: #1E3A5F;
         }
+
+        .email-config {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: #166534;
+        }
     </style>
 </head>
 <body>
@@ -336,6 +346,11 @@
         <div class="stat-card"><div class="stat-value" id="swapCount1">0</div><div class="stat-label">Swaps (1-15)</div></div>
         <div class="stat-card"><div class="stat-value" id="swapCount2">0</div><div class="stat-label">Swaps (16-31)</div></div>
         <div class="stat-card"><div class="stat-value" id="pendingCount">0</div><div class="stat-label">Pending Requests</div></div>
+    </div>
+
+    <!-- Email notification info -->
+    <div class="email-config" id="emailConfigMsg">
+        📧 Email notifications will be sent when swaps are accepted
     </div>
 
     <!-- Tab Navigation -->
@@ -402,12 +417,99 @@
 <script src="user.js"></script>
 <script src="dcfire.js"></script>
 
-<script>
-    let staffMembers = []; // Will be populated from user.js
-    let currentUser = null;
-    let swapRequests = []; // Store all swap requests
+<!-- EmailJS SDK for sending emails -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    // Load swap requests from localStorage
+<script>
+    // ==================== EMAIL CONFIGURATION ====================
+    // IMPORTANT: You need to set up EmailJS (free) and replace these with your credentials
+    // Step 1: Go to https://www.emailjs.com/ and sign up (free)
+    // Step 2: Create an email service (Gmail, Outlook, etc.)
+    // Step 3: Create an email template
+    // Step 4: Get your Public Key from Integration section
+    
+    // EmailJS configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
+    const EMAIL_CONFIG = {
+        PUBLIC_KEY: "YOUR_EMAILJS_PUBLIC_KEY",  // Get from EmailJS dashboard
+        SERVICE_ID: "YOUR_SERVICE_ID",           // e.g., "service_gmail"
+        TEMPLATE_ID: "YOUR_TEMPLATE_ID"          // e.g., "template_duty_swap"
+    };
+    
+    // List of emails to notify when swap is accepted
+    const NOTIFICATION_EMAILS = [
+        "supervisor@company.com",      // Replace with actual supervisor email
+        "hr@company.com",              // Replace with actual HR email
+        "admin@company.com"            // Replace with actual admin email
+        // Add more emails as needed
+    ];
+    
+    // Initialize EmailJS
+    emailjs.init(EMAIL_CONFIG.PUBLIC_KEY);
+    
+    // Function to send email notification
+    async function sendSwapAcceptedEmail(request, acceptedBy) {
+        try {
+            // Prepare email template parameters
+            const templateParams = {
+                to_emails: NOTIFICATION_EMAILS.join(','),  // Send to multiple recipients
+                requester_name: request.requesterName,
+                requester_rc: request.requesterRcNo,
+                receiver_name: request.receiverName,
+                receiver_rc: request.receiverRcNo,
+                swap_date: request.date,
+                requester_original_duty: request.myDutyTime,
+                receiver_original_duty: request.requestedDutyTime,
+                accepted_by: acceptedBy,
+                acceptance_time: new Date().toLocaleString(),
+                subject: `Duty Swap Accepted - ${request.requesterName} & ${request.receiverName}`,
+                message: `A duty swap request has been ACCEPTED.\n\n` +
+                        `📅 Date: ${request.date}\n` +
+                        `👤 Requester: ${request.requesterName} (RC: ${request.requesterRcNo})\n` +
+                        `👤 Acceptor: ${request.receiverName} (RC: ${request.receiverRcNo})\n` +
+                        `🕐 Requester's Original Duty: ${request.myDutyTime}\n` +
+                        `🕐 Receiver's Original Duty: ${request.requestedDutyTime}\n` +
+                        `✅ Status: ACCEPTED by ${acceptedBy}\n` +
+                        `⏰ Accepted at: ${new Date().toLocaleString()}\n\n` +
+                        `The duty swap has been recorded in the system.`
+            };
+            
+            // Send email using EmailJS
+            const response = await emailjs.send(EMAIL_CONFIG.SERVICE_ID, EMAIL_CONFIG.TEMPLATE_ID, templateParams);
+            console.log('Email sent successfully:', response);
+            return true;
+        } catch (error) {
+            console.error('Failed to send email:', error);
+            // Don't block the swap process if email fails, just log error
+            return false;
+        }
+    }
+    
+    // Alternative: Using mailto: links as fallback (no backend required)
+    function sendEmailViaMailto(request) {
+        const subject = encodeURIComponent(`Duty Swap Accepted - ${request.requesterName} & ${request.receiverName}`);
+        const body = encodeURIComponent(
+            `Duty Swap Request ACCEPTED\n\n` +
+            `Date: ${request.date}\n` +
+            `Requester: ${request.requesterName} (RC: ${request.requesterRcNo})\n` +
+            `Acceptor: ${request.receiverName} (RC: ${request.receiverRcNo})\n` +
+            `Requester's Original Duty: ${request.myDutyTime}\n` +
+            `Receiver's Original Duty: ${request.requestedDutyTime}\n` +
+            `Accepted by: ${request.receiverName}\n` +
+            `Accepted at: ${new Date().toLocaleString()}\n\n` +
+            `This swap has been recorded in the Duty Manager system.`
+        );
+        
+        const mailtoLink = `mailto:${NOTIFICATION_EMAILS.join(',')}?subject=${subject}&body=${body}`;
+        window.open(mailtoLink, '_blank');
+        return true;
+    }
+    
+    // ==================== MAIN APP CODE ====================
+    
+    let staffMembers = [];
+    let currentUser = null;
+    let swapRequests = [];
+
     function loadSwapRequests() {
         const stored = localStorage.getItem('dutyManagerSwaps');
         if (stored) {
@@ -422,7 +524,6 @@
         localStorage.setItem('dutyManagerSwaps', JSON.stringify(swapRequests));
     }
 
-    // Load staff from user.js (global users array)
     function loadStaffFromUserJS() {
         if (typeof users !== 'undefined' && Array.isArray(users)) {
             staffMembers = users.map(user => ({
@@ -436,7 +537,6 @@
             return true;
         } else {
             console.error('user.js not loaded or users array not found');
-            // Fallback sample data if user.js not available
             staffMembers = [
                 { username: "Irufan", name: "Abdulla Irufan", rcNo: "979", level: "Supervisor" }
             ];
@@ -444,7 +544,6 @@
         }
     }
 
-    // Calculate swap count for a user in a date range
     function getUserSwapCountInPeriod(username, period) {
         return swapRequests.filter(req => {
             if (req.status !== 'accepted') return false;
@@ -535,13 +634,10 @@
         swapRequests.push(request);
         saveSwapRequests();
         
-        // Clear form
         document.getElementById('swapDate').value = '';
         document.getElementById('myDutyTime').value = '';
         document.getElementById('requestedDutyTime').value = '';
         document.getElementById('staffSelect').value = '';
-        
-        // Reset date to today
         document.getElementById('swapDate').value = new Date().toISOString().split('T')[0];
         
         showNotification('Swap request sent successfully!');
@@ -552,12 +648,10 @@
         updateSwapLimits();
     }
     
-    function acceptRequest(requestId) {
+    async function acceptRequest(requestId) {
         const request = swapRequests.find(r => r.id === requestId);
         if (!request) return;
         
-        // Check if receiver can accept (has swap limit)
-        const today = new Date();
         const day = new Date(request.date).getDate();
         let currentCount = 0;
         if (day <= 15) {
@@ -575,14 +669,30 @@
         request.respondedAt = new Date().toISOString();
         saveSwapRequests();
         
-        showNotification(`Swap request accepted! Duty times have been swapped.`);
+        // Send email notifications
+        showNotification('Sending email notifications...');
+        
+        // Try EmailJS first, fallback to mailto
+        let emailSent = false;
+        if (EMAIL_CONFIG.PUBLIC_KEY !== "YOUR_EMAILJS_PUBLIC_KEY" && 
+            EMAIL_CONFIG.SERVICE_ID !== "YOUR_SERVICE_ID") {
+            emailSent = await sendSwapAcceptedEmail(request, currentUser.name);
+        }
+        
+        // If EmailJS not configured or failed, use mailto as fallback
+        if (!emailSent) {
+            sendEmailViaMailto(request);
+            showNotification(`Swap accepted! Email client opened. Please send the email.`);
+        } else {
+            showNotification(`Swap accepted! Email notifications sent to ${NOTIFICATION_EMAILS.length} recipients.`);
+        }
+        
         renderIncomingRequests();
         renderOutgoingRequests();
         renderHistory();
         updatePendingCount();
         updateSwapLimits();
         
-        // Sync to Firebase if available
         if (typeof firebase !== 'undefined' && firebase.firestore) {
             const db = firebase.firestore();
             db.collection('swapRequests').doc(request.id.toString()).set(request).catch(e => console.log);
@@ -664,7 +774,6 @@
         }
         container.innerHTML = history.map(req => {
             const isRequester = req.requester === currentUser?.username;
-            const otherPerson = isRequester ? req.receiverName : req.requesterName;
             const statusClass = req.status === 'accepted' ? 'status-accepted' : 'status-rejected';
             const statusText = req.status === 'accepted' ? 'Accepted ✓' : 'Rejected ✗';
             return `
@@ -773,10 +882,7 @@
     
     function init() {
         if (!loadSession()) return;
-        
-        // Load staff from user.js
         loadStaffFromUserJS();
-        
         loadSwapRequests();
         loadStaffDropdown();
         updateSwapLimits();
@@ -784,12 +890,17 @@
         renderIncomingRequests();
         renderOutgoingRequests();
         renderHistory();
-        
-        // Set default date to today
         document.getElementById('swapDate').value = new Date().toISOString().split('T')[0];
+        
+        // Show email config status
+        const emailConfigMsg = document.getElementById('emailConfigMsg');
+        if (EMAIL_CONFIG.PUBLIC_KEY === "YOUR_EMAILJS_PUBLIC_KEY") {
+            emailConfigMsg.innerHTML = '📧 Email notifications ready! When you accept a swap, emails will be sent.<br><small>Configure EmailJS credentials in the code for automatic emails.</small>';
+        } else {
+            emailConfigMsg.innerHTML = '✅ EmailJS configured! Automatic emails will be sent when swaps are accepted.';
+        }
     }
     
-    // Wait for user.js to load
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
