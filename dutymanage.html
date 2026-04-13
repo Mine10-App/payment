@@ -398,16 +398,12 @@
     </div>
 </div>
 
+<!-- Import user.js for staff data -->
+<script src="user.js"></script>
 <script src="dcfire.js"></script>
-<script>
-    // Staff list (in real app, fetch from Firebase)
-    const staffMembers = [
-        { username: "Irufan", name: "Abdulla Irufan", rcNo: "979" },
-        { username: "Ahmed", name: "Ahmed Raza", rcNo: "101" },
-        { username: "Fatima", name: "Fatima Zahra", rcNo: "202" },
-        { username: "Khalid", name: "Khalid Omar", rcNo: "303" }
-    ];
 
+<script>
+    let staffMembers = []; // Will be populated from user.js
     let currentUser = null;
     let swapRequests = []; // Store all swap requests
 
@@ -417,7 +413,6 @@
         if (stored) {
             swapRequests = JSON.parse(stored);
         } else {
-            // Sample data for demo
             swapRequests = [];
         }
         saveSwapRequests();
@@ -427,9 +422,30 @@
         localStorage.setItem('dutyManagerSwaps', JSON.stringify(swapRequests));
     }
 
+    // Load staff from user.js (global users array)
+    function loadStaffFromUserJS() {
+        if (typeof users !== 'undefined' && Array.isArray(users)) {
+            staffMembers = users.map(user => ({
+                username: user.username,
+                name: user.name,
+                rcNo: user.RCNo,
+                level: user.Level,
+                passwordHash: user.passwordHash
+            }));
+            console.log(`Loaded ${staffMembers.length} staff members from user.js`);
+            return true;
+        } else {
+            console.error('user.js not loaded or users array not found');
+            // Fallback sample data if user.js not available
+            staffMembers = [
+                { username: "Irufan", name: "Abdulla Irufan", rcNo: "979", level: "Supervisor" }
+            ];
+            return false;
+        }
+    }
+
     // Calculate swap count for a user in a date range
     function getUserSwapCountInPeriod(username, period) {
-        // period: 'first' (1-15) or 'second' (16-end)
         return swapRequests.filter(req => {
             if (req.status !== 'accepted') return false;
             const isRequester = req.requester === username;
@@ -499,13 +515,16 @@
             return;
         }
         
+        const receiver = staffMembers.find(s => s.username === receiverUsername);
+        
         const request = {
             id: Date.now(),
             requester: currentUser.username,
             requesterName: currentUser.name,
             requesterRcNo: currentUser.rcNo,
             receiver: receiverUsername,
-            receiverName: staffMembers.find(s => s.username === receiverUsername)?.name || receiverUsername,
+            receiverName: receiver?.name || receiverUsername,
+            receiverRcNo: receiver?.rcNo || '',
             date: date,
             myDutyTime: myDutyTime,
             requestedDutyTime: requestedDutyTime,
@@ -522,6 +541,9 @@
         document.getElementById('requestedDutyTime').value = '';
         document.getElementById('staffSelect').value = '';
         
+        // Reset date to today
+        document.getElementById('swapDate').value = new Date().toISOString().split('T')[0];
+        
         showNotification('Swap request sent successfully!');
         renderIncomingRequests();
         renderOutgoingRequests();
@@ -535,7 +557,6 @@
         if (!request) return;
         
         // Check if receiver can accept (has swap limit)
-        const tempUser = { username: request.receiver, name: request.receiverName, rcNo: '' };
         const today = new Date();
         const day = new Date(request.date).getDate();
         let currentCount = 0;
@@ -561,7 +582,7 @@
         updatePendingCount();
         updateSwapLimits();
         
-        // Refresh for both users (simulate real-time)
+        // Sync to Firebase if available
         if (typeof firebase !== 'undefined' && firebase.firestore) {
             const db = firebase.firestore();
             db.collection('swapRequests').doc(request.id.toString()).set(request).catch(e => console.log);
@@ -596,9 +617,9 @@
                     <span class="status-badge status-pending">Pending</span>
                 </div>
                 <div class="request-details">
-                    👤 From: ${req.requesterName}<br>
-                    🕐 My duty: ${req.requestedDutyTime}<br>
-                    🔄 Their duty: ${req.myDutyTime}
+                    👤 From: ${req.requesterName} (RC: ${req.requesterRcNo})<br>
+                    🕐 Their duty: ${req.myDutyTime}<br>
+                    🔄 Requested your duty: ${req.requestedDutyTime}
                 </div>
                 <div class="request-actions">
                     <button class="btn-accept" onclick="acceptRequest(${req.id})">✓ Accept</button>
@@ -622,9 +643,9 @@
                     <span class="status-badge status-pending">Waiting response</span>
                 </div>
                 <div class="request-details">
-                    👤 To: ${req.receiverName}<br>
+                    👤 To: ${req.receiverName} (RC: ${req.receiverRcNo})<br>
                     🕐 My duty: ${req.myDutyTime}<br>
-                    🔄 Their duty: ${req.requestedDutyTime}
+                    🔄 Requested their duty: ${req.requestedDutyTime}
                 </div>
             </div>
         `).join('');
@@ -653,9 +674,9 @@
                         <span class="status-badge ${statusClass}">${statusText}</span>
                     </div>
                     <div class="request-details">
-                        ${isRequester ? `With: ${req.receiverName}` : `From: ${req.requesterName}`}<br>
-                        ${isRequester ? `Your duty: ${req.myDutyTime}` : `Their duty: ${req.requestedDutyTime}`}<br>
-                        ${isRequester ? `Their duty: ${req.requestedDutyTime}` : `Your duty: ${req.myDutyTime}`}
+                        ${isRequester ? `With: ${req.receiverName} (RC: ${req.receiverRcNo})` : `From: ${req.requesterName} (RC: ${req.requesterRcNo})`}<br>
+                        ${isRequester ? `Your duty: ${req.myDutyTime}` : `Their duty: ${req.myDutyTime}`}<br>
+                        ${isRequester ? `Their duty: ${req.requestedDutyTime}` : `Your duty: ${req.requestedDutyTime}`}
                     </div>
                 </div>
             `;
@@ -670,8 +691,13 @@
     function loadStaffDropdown() {
         const select = document.getElementById('staffSelect');
         const others = staffMembers.filter(s => s.username !== currentUser?.username);
-        select.innerHTML = '<option value="">Select staff member</option>' + 
-            others.map(s => `<option value="${s.username}">${s.name} (RC: ${s.rcNo})</option>`).join('');
+        
+        if (others.length === 0) {
+            select.innerHTML = '<option value="">No other staff members available</option>';
+        } else {
+            select.innerHTML = '<option value="">Select staff member</option>' + 
+                others.map(s => `<option value="${s.username}">${s.name} (RC: ${s.rcNo}) - ${s.level}</option>`).join('');
+        }
     }
     
     function switchTab(tab) {
@@ -747,6 +773,10 @@
     
     function init() {
         if (!loadSession()) return;
+        
+        // Load staff from user.js
+        loadStaffFromUserJS();
+        
         loadSwapRequests();
         loadStaffDropdown();
         updateSwapLimits();
@@ -759,7 +789,12 @@
         document.getElementById('swapDate').value = new Date().toISOString().split('T')[0];
     }
     
-    init();
+    // Wait for user.js to load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 </script>
 </body>
 </html>
