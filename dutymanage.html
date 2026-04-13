@@ -16,9 +16,9 @@
             font-family: 'Segoe UI', Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
             background: #f0f4f8;
             min-height: 100vh;
+            padding-bottom: 70px;
         }
 
-        /* Header */
         .app-header {
             background: linear-gradient(135deg, #1E3A5F, #2a4a6e);
             color: white;
@@ -47,12 +47,6 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .logout-btn:active {
-            background: rgba(255,255,255,0.3);
-            transform: scale(0.95);
         }
 
         .user-info {
@@ -70,10 +64,6 @@
             font-size: 14px;
         }
 
-        .user-detail strong {
-            font-weight: 700;
-        }
-
         .badge {
             background: #fbbf24;
             color: #1E3A5F;
@@ -83,52 +73,39 @@
             font-weight: 700;
         }
 
-        /* Main Content */
         .main-content {
             padding: 20px;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             margin-bottom: 24px;
         }
 
         .stat-card {
             background: white;
             border-radius: 20px;
-            padding: 20px;
+            padding: 16px 12px;
             text-align: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-
-        .stat-card:active {
-            transform: scale(0.98);
-        }
-
-        .stat-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
         }
 
         .stat-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: #1E3A5F;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #64748b;
             margin-top: 4px;
         }
 
-        /* Section */
         .section {
             background: white;
             border-radius: 24px;
@@ -145,46 +122,32 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        /* Duty List */
-        .duty-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .duty-item {
-            background: #f8fafc;
-            padding: 16px;
-            border-radius: 16px;
             border-left: 4px solid #1E3A5F;
+            padding-left: 12px;
+        }
+
+        .request-card, .swap-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .request-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
-        .duty-info h4 {
-            font-size: 16px;
-            margin-bottom: 4px;
-            color: #0f172a;
-        }
-
-        .duty-info p {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .status {
+        .status-badge {
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-        }
-
-        .status-active {
-            background: #dcfce7;
-            color: #166534;
         }
 
         .status-pending {
@@ -192,79 +155,107 @@
             color: #92400e;
         }
 
-        /* Quick Actions */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .status-accepted {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .request-details {
+            font-size: 14px;
+            color: #334155;
+            margin: 8px 0;
+        }
+
+        .request-actions {
+            display: flex;
             gap: 12px;
             margin-top: 12px;
         }
 
-        .action-btn {
-            background: #f1f5f9;
+        .btn-accept, .btn-reject {
+            padding: 8px 16px;
             border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-accept {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #ef4444;
+            color: white;
+        }
+
+        select, input, .swap-btn {
+            width: 100%;
             padding: 12px;
+            margin-bottom: 12px;
+            border: 2px solid #e2e8f0;
             border-radius: 16px;
             font-size: 14px;
+        }
+
+        .swap-btn {
+            background: #1E3A5F;
+            color: white;
             font-weight: 600;
-            color: #1E3A5F;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .action-btn:active {
-            background: #e2e8f0;
-            transform: scale(0.97);
-        }
-
-        /* Footer */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 20px;
-            box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            background: none;
             border: none;
-            font-size: 12px;
-            color: #94a3b8;
             cursor: pointer;
-            padding: 8px;
+        }
+
+        .swap-limit-warning {
+            background: #fef3c7;
+            padding: 8px 12px;
             border-radius: 12px;
-            transition: all 0.2s;
+            font-size: 12px;
+            color: #92400e;
+            margin-bottom: 12px;
         }
 
-        .nav-item.active {
-            color: #1E3A5F;
-            background: #f0f9ff;
+        .tab-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 8px;
+            border-radius: 40px;
         }
 
-        .nav-item span:first-child {
-            font-size: 22px;
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 32px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        /* Spacing for bottom nav */
-        .content-spacing {
-            padding-bottom: 80px;
+        .tab-btn.active {
+            background: #1E3A5F;
+            color: white;
         }
 
-        /* Modal */
+        .hidden {
+            display: none;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            padding: 20px;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -287,11 +278,6 @@
             text-align: center;
         }
 
-        .modal-content h3 {
-            margin-bottom: 16px;
-            color: #1E3A5F;
-        }
-
         .modal-content button {
             background: #1E3A5F;
             color: white;
@@ -301,291 +287,479 @@
             margin-top: 16px;
             cursor: pointer;
         }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px;
+            box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-size: 12px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .nav-item.active {
+            color: #1E3A5F;
+        }
     </style>
 </head>
 <body>
-    <div class="app-header">
-        <div class="header-top">
-            <h1>📋 Duty Manager</h1>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-        <div class="user-info" id="userInfo">
-            <div class="user-detail">
-                <strong>Loading...</strong>
-            </div>
-            <div class="badge" id="designationBadge">-</div>
-        </div>
+<div class="app-header">
+    <div class="header-top">
+        <h1>📋 Duty Manager</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    <div class="user-info" id="userInfo">
+        <div class="user-detail"><strong>Loading...</strong></div>
+        <div class="badge" id="designationBadge">-</div>
+    </div>
+</div>
+
+<div class="main-content" id="mainContent">
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value" id="swapCount1">0</div><div class="stat-label">Swaps (1-15)</div></div>
+        <div class="stat-card"><div class="stat-value" id="swapCount2">0</div><div class="stat-label">Swaps (16-31)</div></div>
+        <div class="stat-card"><div class="stat-value" id="pendingCount">0</div><div class="stat-label">Pending Requests</div></div>
     </div>
 
-    <div class="main-content content-spacing" id="mainContent">
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-value" id="activeDutyCount">0</div>
-                <div class="stat-label">Active Duties</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">✅</div>
-                <div class="stat-value" id="completedCount">0</div>
-                <div class="stat-label">Completed</div>
-            </div>
-        </div>
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('request')">➕ Request Swap</button>
+        <button class="tab-btn" onclick="switchTab('incoming')">📥 Incoming</button>
+        <button class="tab-btn" onclick="switchTab('outgoing')">📤 Outgoing</button>
+        <button class="tab-btn" onclick="switchTab('history')">📜 History</button>
+    </div>
 
-        <!-- Current Duties Section -->
+    <!-- Request Swap Tab -->
+    <div id="requestTab" class="tab-content">
         <div class="section">
-            <div class="section-title">
-                <span>📌</span> Current Duties
-            </div>
-            <div class="duty-list" id="dutyList">
-                <div style="text-align: center; color: #94a3b8; padding: 20px;">Loading duties...</div>
-            </div>
+            <div class="section-title">🔄 Request Duty Swap</div>
+            <div id="swapLimitWarning" class="swap-limit-warning"></div>
+            <select id="staffSelect">
+                <option value="">Select staff member</option>
+            </select>
+            <input type="date" id="swapDate" placeholder="Select date">
+            <input type="text" id="myDutyTime" placeholder="My duty time (e.g., 06:00-14:00)">
+            <input type="text" id="requestedDutyTime" placeholder="Requested staff duty time">
+            <button class="swap-btn" onclick="sendSwapRequest()">📨 Send Swap Request</button>
         </div>
+    </div>
 
-        <!-- Quick Actions -->
+    <!-- Incoming Requests Tab -->
+    <div id="incomingTab" class="tab-content hidden">
         <div class="section">
-            <div class="section-title">
-                <span>⚡</span> Quick Actions
-            </div>
-            <div class="action-buttons">
-                <button class="action-btn" onclick="showNotification('Assign Duty feature coming soon')">
-                    ➕ Assign Duty
-                </button>
-                <button class="action-btn" onclick="showNotification('View Reports feature coming soon')">
-                    📈 View Reports
-                </button>
-                <button class="action-btn" onclick="showNotification('Staff Management coming soon')">
-                    👥 Staff
-                </button>
-                <button class="action-btn" onclick="showNotification('Settings coming soon')">
-                    ⚙️ Settings
-                </button>
-            </div>
+            <div class="section-title">📥 Incoming Swap Requests</div>
+            <div id="incomingRequestsList"></div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('dashboard')">
-            <span>🏠</span>
-            <span>Dashboard</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('duties')">
-            <span>📋</span>
-            <span>Duties</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('profile')">
-            <span>👤</span>
-            <span>Profile</span>
-        </button>
-    </div>
-
-    <!-- Modal for notifications -->
-    <div id="notificationModal" class="modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 id="modalMessage">Notification</h3>
-            <button onclick="closeModal()">OK</button>
+    <!-- Outgoing Requests Tab -->
+    <div id="outgoingTab" class="tab-content hidden">
+        <div class="section">
+            <div class="section-title">📤 My Sent Requests</div>
+            <div id="outgoingRequestsList"></div>
         </div>
     </div>
 
-    <script src="dcfire.js"></script>
-    <script>
-        // Sample duty data
-        let duties = [
-            { id: 1, title: "Morning Shift", time: "06:00 - 14:00", status: "active", assignedTo: "Irufan" },
-            { id: 2, title: "Equipment Inspection", time: "08:00 - 10:00", status: "pending", assignedTo: "Team A" },
-            { id: 3, title: "Safety Round", time: "14:00 - 15:00", status: "pending", assignedTo: "Irufan" }
-        ];
+    <!-- History Tab -->
+    <div id="historyTab" class="tab-content hidden">
+        <div class="section">
+            <div class="section-title">📜 Swap History</div>
+            <div id="historyList"></div>
+        </div>
+    </div>
+</div>
 
-        let currentUser = null;
+<div class="bottom-nav">
+    <button class="nav-item active" onclick="bottomNav('dashboard')"><span>🏠</span><span>Home</span></button>
+    <button class="nav-item" onclick="bottomNav('swap')"><span>🔄</span><span>Swap</span></button>
+</div>
 
-        // Load user session
-        function loadSession() {
-            const session = localStorage.getItem('dutyManagerSession');
-            if (!session) {
-                window.location.href = 'index.html';
-                return null;
-            }
-            try {
-                const userData = JSON.parse(session);
-                currentUser = userData;
-                return userData;
-            } catch(e) {
-                window.location.href = 'index.html';
-                return null;
-            }
+<div id="notificationModal" class="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 id="modalMessage">Notification</h3>
+        <button onclick="closeModal()">OK</button>
+    </div>
+</div>
+
+<script src="dcfire.js"></script>
+<script>
+    // Staff list (in real app, fetch from Firebase)
+    const staffMembers = [
+        { username: "Irufan", name: "Abdulla Irufan", rcNo: "979" },
+        { username: "Ahmed", name: "Ahmed Raza", rcNo: "101" },
+        { username: "Fatima", name: "Fatima Zahra", rcNo: "202" },
+        { username: "Khalid", name: "Khalid Omar", rcNo: "303" }
+    ];
+
+    let currentUser = null;
+    let swapRequests = []; // Store all swap requests
+
+    // Load swap requests from localStorage
+    function loadSwapRequests() {
+        const stored = localStorage.getItem('dutyManagerSwaps');
+        if (stored) {
+            swapRequests = JSON.parse(stored);
+        } else {
+            // Sample data for demo
+            swapRequests = [];
         }
+        saveSwapRequests();
+    }
 
-        // Update user info in header
-        function updateUserInfo() {
-            if (currentUser) {
-                const userInfoDiv = document.getElementById('userInfo');
-                userInfoDiv.innerHTML = `
-                    <div class="user-detail">
-                        <strong>${currentUser.name}</strong><br>
-                        <span style="font-size: 12px;">RC: ${currentUser.rcNo}</span>
-                    </div>
-                    <div class="badge" id="designationBadge">${currentUser.level}</div>
-                `;
-            }
+    function saveSwapRequests() {
+        localStorage.setItem('dutyManagerSwaps', JSON.stringify(swapRequests));
+    }
+
+    // Calculate swap count for a user in a date range
+    function getUserSwapCountInPeriod(username, period) {
+        // period: 'first' (1-15) or 'second' (16-end)
+        return swapRequests.filter(req => {
+            if (req.status !== 'accepted') return false;
+            const isRequester = req.requester === username;
+            const isReceiver = req.receiver === username;
+            if (!isRequester && !isReceiver) return false;
+            
+            const day = new Date(req.date).getDate();
+            if (period === 'first') return day >= 1 && day <= 15;
+            else return day >= 16;
+        }).length;
+    }
+
+    function updateSwapLimits() {
+        if (!currentUser) return;
+        const firstHalf = getUserSwapCountInPeriod(currentUser.username, 'first');
+        const secondHalf = getUserSwapCountInPeriod(currentUser.username, 'second');
+        document.getElementById('swapCount1').textContent = `${firstHalf}/2`;
+        document.getElementById('swapCount2').textContent = `${secondHalf}/2`;
+        
+        const today = new Date();
+        const currentDay = today.getDate();
+        let remaining = 2;
+        let warning = '';
+        if (currentDay <= 15) {
+            remaining = 2 - firstHalf;
+            warning = `You have ${remaining} swap${remaining !== 1 ? 's' : ''} remaining for this period (1st-15th)`;
+        } else {
+            remaining = 2 - secondHalf;
+            warning = `You have ${remaining} swap${remaining !== 1 ? 's' : ''} remaining for this period (16th-31st)`;
         }
-
-        // Update stats
-        function updateStats() {
-            const activeCount = duties.filter(d => d.status === 'active').length;
-            const completedCount = duties.filter(d => d.status === 'completed').length;
-            document.getElementById('activeDutyCount').textContent = activeCount;
-            document.getElementById('completedCount').textContent = completedCount;
+        const warningDiv = document.getElementById('swapLimitWarning');
+        if (warningDiv) {
+            warningDiv.innerHTML = remaining <= 0 ? '⚠️ You have reached your swap limit for this period!' : `ℹ️ ${warning}`;
+            warningDiv.style.background = remaining <= 0 ? '#fee2e2' : '#fef3c7';
+            warningDiv.style.color = remaining <= 0 ? '#991b1b' : '#92400e';
         }
+        return remaining;
+    }
 
-        // Render duty list
-        function renderDuties() {
-            const dutyListDiv = document.getElementById('dutyList');
-            const activeDuties = duties.filter(d => d.status !== 'completed');
-            
-            if (activeDuties.length === 0) {
-                dutyListDiv.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 20px;">No active duties 🎉</div>';
-                return;
-            }
-            
-            dutyListDiv.innerHTML = activeDuties.map(duty => `
-                <div class="duty-item">
-                    <div class="duty-info">
-                        <h4>${duty.title}</h4>
-                        <p>🕐 ${duty.time} | 👤 ${duty.assignedTo}</p>
-                    </div>
-                    <div>
-                        <span class="status ${duty.status === 'active' ? 'status-active' : 'status-pending'}">
-                            ${duty.status === 'active' ? '● Active' : '⏳ Pending'}
-                        </span>
-                        ${duty.status === 'pending' ? `<button onclick="completeDuty(${duty.id})" style="margin-left: 8px; padding: 4px 8px; background: #1E3A5F; color: white; border: none; border-radius: 12px; font-size: 11px; cursor: pointer;">Mark Complete</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
+    function canRequestSwap() {
+        const today = new Date();
+        const currentDay = today.getDate();
+        const firstHalf = getUserSwapCountInPeriod(currentUser.username, 'first');
+        const secondHalf = getUserSwapCountInPeriod(currentUser.username, 'second');
+        if (currentDay <= 15) return firstHalf < 2;
+        else return secondHalf < 2;
+    }
 
-        // Complete duty function
-        window.completeDuty = function(dutyId) {
-            const duty = duties.find(d => d.id === dutyId);
-            if (duty) {
-                duty.status = 'completed';
-                updateStats();
-                renderDuties();
-                showNotification(`✅ "${duty.title}" marked as completed!`);
-                
-                // Sync to Firestore if available
-                if (typeof firebase !== 'undefined' && firebase.firestore) {
-                    const db = firebase.firestore();
-                    db.collection('duties').doc(dutyId.toString()).set({
-                        title: duty.title,
-                        status: duty.status,
-                        completedAt: new Date(),
-                        completedBy: currentUser?.username
-                    }).catch(e => console.log('Firestore sync optional'));
-                }
-            }
-        };
-
-        // Tab switching
-        window.switchTab = function(tab) {
-            const mainContent = document.getElementById('mainContent');
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            event.target.closest('.nav-item').classList.add('active');
-            
-            if (tab === 'dashboard') {
-                mainContent.innerHTML = `
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">📊</div>
-                            <div class="stat-value" id="activeDutyCount">0</div>
-                            <div class="stat-label">Active Duties</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">✅</div>
-                            <div class="stat-value" id="completedCount">0</div>
-                            <div class="stat-label">Completed</div>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><span>📌</span> Current Duties</div>
-                        <div class="duty-list" id="dutyList"></div>
-                    </div>
-                    <div class="section">
-                        <div class="section-title"><span>⚡</span> Quick Actions</div>
-                        <div class="action-buttons">
-                            <button class="action-btn" onclick="showNotification('Assign Duty feature coming soon')">➕ Assign Duty</button>
-                            <button class="action-btn" onclick="showNotification('View Reports feature coming soon')">📈 View Reports</button>
-                            <button class="action-btn" onclick="showNotification('Staff Management coming soon')">👥 Staff</button>
-                            <button class="action-btn" onclick="showNotification('Settings coming soon')">⚙️ Settings</button>
-                        </div>
-                    </div>
-                `;
-                updateStats();
-                renderDuties();
-            } else if (tab === 'duties') {
-                mainContent.innerHTML = `
-                    <div class="section">
-                        <div class="section-title"><span>📋</span> All Duties</div>
-                        <div class="duty-list" id="dutyList"></div>
-                    </div>
-                `;
-                renderDuties();
-            } else if (tab === 'profile') {
-                mainContent.innerHTML = `
-                    <div class="section">
-                        <div class="section-title"><span>👤</span> Profile Information</div>
-                        <div class="duty-item" style="flex-direction: column; align-items: flex-start; gap: 12px;">
-                            <div><strong>Full Name:</strong> ${currentUser?.name || 'N/A'}</div>
-                            <div><strong>Username:</strong> ${currentUser?.username || 'N/A'}</div>
-                            <div><strong>RC Number:</strong> ${currentUser?.rcNo || 'N/A'}</div>
-                            <div><strong>Designation:</strong> ${currentUser?.level || 'N/A'}</div>
-                            <div><strong>Role:</strong> Duty Manager</div>
-                        </div>
-                    </div>
-                `;
-            }
-        };
-
-        // Notification
-        window.showNotification = function(message) {
-            const modal = document.getElementById('notificationModal');
-            const modalMessage = document.getElementById('modalMessage');
-            modalMessage.textContent = message;
-            modal.style.display = 'flex';
-        };
-
-        window.closeModal = function() {
-            const modal = document.getElementById('notificationModal');
-            modal.style.display = 'none';
-        };
-
-        // Logout
-        window.logout = function() {
-            localStorage.removeItem('dutyManagerSession');
-            window.location.href = 'index.html';
-        };
-
-        // Initialize page
-        function init() {
-            if (!loadSession()) return;
-            updateUserInfo();
-            updateStats();
-            renderDuties();
-            
-            // Optional: Sync with Firebase Firestore if available
-            if (typeof firebase !== 'undefined' && firebase.firestore && currentUser) {
-                const db = firebase.firestore();
-                db.collection('users').doc(currentUser.username).set({
-                    name: currentUser.name,
-                    rcNo: currentUser.rcNo,
-                    level: currentUser.level,
-                    lastActive: new Date()
-                }, { merge: true }).catch(e => console.log('Firestore optional sync'));
-            }
+    function sendSwapRequest() {
+        if (!canRequestSwap()) {
+            showNotification('You have reached your swap limit for this period!');
+            return;
         }
         
-        init();
-    </script>
+        const receiverUsername = document.getElementById('staffSelect').value;
+        const date = document.getElementById('swapDate').value;
+        const myDutyTime = document.getElementById('myDutyTime').value;
+        const requestedDutyTime = document.getElementById('requestedDutyTime').value;
+        
+        if (!receiverUsername || !date || !myDutyTime || !requestedDutyTime) {
+            showNotification('Please fill all fields');
+            return;
+        }
+        
+        if (receiverUsername === currentUser.username) {
+            showNotification('You cannot request swap with yourself');
+            return;
+        }
+        
+        const request = {
+            id: Date.now(),
+            requester: currentUser.username,
+            requesterName: currentUser.name,
+            requesterRcNo: currentUser.rcNo,
+            receiver: receiverUsername,
+            receiverName: staffMembers.find(s => s.username === receiverUsername)?.name || receiverUsername,
+            date: date,
+            myDutyTime: myDutyTime,
+            requestedDutyTime: requestedDutyTime,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+        };
+        
+        swapRequests.push(request);
+        saveSwapRequests();
+        
+        // Clear form
+        document.getElementById('swapDate').value = '';
+        document.getElementById('myDutyTime').value = '';
+        document.getElementById('requestedDutyTime').value = '';
+        document.getElementById('staffSelect').value = '';
+        
+        showNotification('Swap request sent successfully!');
+        renderIncomingRequests();
+        renderOutgoingRequests();
+        renderHistory();
+        updatePendingCount();
+        updateSwapLimits();
+    }
+    
+    function acceptRequest(requestId) {
+        const request = swapRequests.find(r => r.id === requestId);
+        if (!request) return;
+        
+        // Check if receiver can accept (has swap limit)
+        const tempUser = { username: request.receiver, name: request.receiverName, rcNo: '' };
+        const today = new Date();
+        const day = new Date(request.date).getDate();
+        let currentCount = 0;
+        if (day <= 15) {
+            currentCount = getUserSwapCountInPeriod(request.receiver, 'first');
+        } else {
+            currentCount = getUserSwapCountInPeriod(request.receiver, 'second');
+        }
+        
+        if (currentCount >= 2) {
+            showNotification(`${request.receiverName} has reached swap limit for this period!`);
+            return;
+        }
+        
+        request.status = 'accepted';
+        request.respondedAt = new Date().toISOString();
+        saveSwapRequests();
+        
+        showNotification(`Swap request accepted! Duty times have been swapped.`);
+        renderIncomingRequests();
+        renderOutgoingRequests();
+        renderHistory();
+        updatePendingCount();
+        updateSwapLimits();
+        
+        // Refresh for both users (simulate real-time)
+        if (typeof firebase !== 'undefined' && firebase.firestore) {
+            const db = firebase.firestore();
+            db.collection('swapRequests').doc(request.id.toString()).set(request).catch(e => console.log);
+        }
+    }
+    
+    function rejectRequest(requestId) {
+        const request = swapRequests.find(r => r.id === requestId);
+        if (request) {
+            request.status = 'rejected';
+            request.respondedAt = new Date().toISOString();
+            saveSwapRequests();
+            showNotification('Swap request rejected');
+            renderIncomingRequests();
+            renderOutgoingRequests();
+            renderHistory();
+            updatePendingCount();
+        }
+    }
+    
+    function renderIncomingRequests() {
+        const incoming = swapRequests.filter(r => r.receiver === currentUser?.username && r.status === 'pending');
+        const container = document.getElementById('incomingRequestsList');
+        if (incoming.length === 0) {
+            container.innerHTML = '<div class="info-text">No incoming requests</div>';
+            return;
+        }
+        container.innerHTML = incoming.map(req => `
+            <div class="request-card">
+                <div class="request-header">
+                    <strong>📅 ${req.date}</strong>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+                <div class="request-details">
+                    👤 From: ${req.requesterName}<br>
+                    🕐 My duty: ${req.requestedDutyTime}<br>
+                    🔄 Their duty: ${req.myDutyTime}
+                </div>
+                <div class="request-actions">
+                    <button class="btn-accept" onclick="acceptRequest(${req.id})">✓ Accept</button>
+                    <button class="btn-reject" onclick="rejectRequest(${req.id})">✗ Reject</button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function renderOutgoingRequests() {
+        const outgoing = swapRequests.filter(r => r.requester === currentUser?.username && r.status === 'pending');
+        const container = document.getElementById('outgoingRequestsList');
+        if (outgoing.length === 0) {
+            container.innerHTML = '<div class="info-text">No pending outgoing requests</div>';
+            return;
+        }
+        container.innerHTML = outgoing.map(req => `
+            <div class="request-card">
+                <div class="request-header">
+                    <strong>📅 ${req.date}</strong>
+                    <span class="status-badge status-pending">Waiting response</span>
+                </div>
+                <div class="request-details">
+                    👤 To: ${req.receiverName}<br>
+                    🕐 My duty: ${req.myDutyTime}<br>
+                    🔄 Their duty: ${req.requestedDutyTime}
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function renderHistory() {
+        const history = swapRequests.filter(r => 
+            (r.requester === currentUser?.username || r.receiver === currentUser?.username) && 
+            r.status !== 'pending'
+        ).sort((a,b) => new Date(b.respondedAt) - new Date(a.respondedAt));
+        
+        const container = document.getElementById('historyList');
+        if (history.length === 0) {
+            container.innerHTML = '<div class="info-text">No swap history</div>';
+            return;
+        }
+        container.innerHTML = history.map(req => {
+            const isRequester = req.requester === currentUser?.username;
+            const otherPerson = isRequester ? req.receiverName : req.requesterName;
+            const statusClass = req.status === 'accepted' ? 'status-accepted' : 'status-rejected';
+            const statusText = req.status === 'accepted' ? 'Accepted ✓' : 'Rejected ✗';
+            return `
+                <div class="request-card">
+                    <div class="request-header">
+                        <strong>📅 ${req.date}</strong>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="request-details">
+                        ${isRequester ? `With: ${req.receiverName}` : `From: ${req.requesterName}`}<br>
+                        ${isRequester ? `Your duty: ${req.myDutyTime}` : `Their duty: ${req.requestedDutyTime}`}<br>
+                        ${isRequester ? `Their duty: ${req.requestedDutyTime}` : `Your duty: ${req.myDutyTime}`}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    function updatePendingCount() {
+        const pending = swapRequests.filter(r => r.receiver === currentUser?.username && r.status === 'pending');
+        document.getElementById('pendingCount').textContent = pending.length;
+    }
+    
+    function loadStaffDropdown() {
+        const select = document.getElementById('staffSelect');
+        const others = staffMembers.filter(s => s.username !== currentUser?.username);
+        select.innerHTML = '<option value="">Select staff member</option>' + 
+            others.map(s => `<option value="${s.username}">${s.name} (RC: ${s.rcNo})</option>`).join('');
+    }
+    
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        if (tab === 'request') {
+            document.getElementById('requestTab').classList.remove('hidden');
+            document.querySelector('.tab-nav button:first-child').classList.add('active');
+            updateSwapLimits();
+        } else if (tab === 'incoming') {
+            document.getElementById('incomingTab').classList.remove('hidden');
+            document.querySelector('.tab-nav button:nth-child(2)').classList.add('active');
+            renderIncomingRequests();
+        } else if (tab === 'outgoing') {
+            document.getElementById('outgoingTab').classList.remove('hidden');
+            document.querySelector('.tab-nav button:nth-child(3)').classList.add('active');
+            renderOutgoingRequests();
+        } else if (tab === 'history') {
+            document.getElementById('historyTab').classList.remove('hidden');
+            document.querySelector('.tab-nav button:nth-child(4)').classList.add('active');
+            renderHistory();
+        }
+    }
+    
+    function bottomNav(page) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        if (page === 'dashboard') {
+            document.querySelector('.nav-item:first-child').classList.add('active');
+            document.getElementById('requestTab').classList.remove('hidden');
+            document.getElementById('incomingTab').classList.add('hidden');
+            document.getElementById('outgoingTab').classList.add('hidden');
+            document.getElementById('historyTab').classList.add('hidden');
+            document.querySelector('.tab-btn:first-child').click();
+        } else if (page === 'swap') {
+            document.querySelector('.nav-item:last-child').classList.add('active');
+            switchTab('request');
+        }
+    }
+    
+    function loadSession() {
+        const session = localStorage.getItem('dutyManagerSession');
+        if (!session) {
+            window.location.href = 'index.html';
+            return null;
+        }
+        try {
+            currentUser = JSON.parse(session);
+            document.getElementById('userInfo').innerHTML = `
+                <div class="user-detail"><strong>${currentUser.name}</strong><br><span style="font-size:12px">RC: ${currentUser.rcNo}</span></div>
+                <div class="badge">${currentUser.level}</div>
+            `;
+            return currentUser;
+        } catch(e) {
+            window.location.href = 'index.html';
+            return null;
+        }
+    }
+    
+    function showNotification(msg) {
+        document.getElementById('modalMessage').textContent = msg;
+        document.getElementById('notificationModal').style.display = 'flex';
+    }
+    
+    function closeModal() {
+        document.getElementById('notificationModal').style.display = 'none';
+    }
+    
+    window.logout = function() {
+        localStorage.removeItem('dutyManagerSession');
+        window.location.href = 'index.html';
+    };
+    
+    function init() {
+        if (!loadSession()) return;
+        loadSwapRequests();
+        loadStaffDropdown();
+        updateSwapLimits();
+        updatePendingCount();
+        renderIncomingRequests();
+        renderOutgoingRequests();
+        renderHistory();
+        
+        // Set default date to today
+        document.getElementById('swapDate').value = new Date().toISOString().split('T')[0];
+    }
+    
+    init();
+</script>
 </body>
 </html>
